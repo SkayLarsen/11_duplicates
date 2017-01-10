@@ -12,7 +12,11 @@ def inspect_folder(folder):
         for filename in files:
             fullpath = os.path.join(root, filename)
             filepaths[filename].append(fullpath)
-    return {name: paths for name, paths in filepaths.items() if len(paths) > 1}
+    homonyms = {}
+    for file in filepaths:
+        if len(filepaths[file]) > 1:
+            homonyms[file] = filepaths[file]
+    return homonyms
 
 
 def are_files_duplicates(file_path1, file_path_2):
