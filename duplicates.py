@@ -1,7 +1,6 @@
 import argparse
 import os.path
 from collections import defaultdict
-from itertools import combinations
 
 
 def inspect_folder(folder):
@@ -11,24 +10,13 @@ def inspect_folder(folder):
     for root, dirs, files in os.walk(folder):
         for filename in files:
             fullpath = os.path.join(root, filename)
-            filepaths[filename].append(fullpath)
-    homonyms = {}
-    for file in filepaths:
-        if len(filepaths[file]) > 1:
-            homonyms[file] = filepaths[file]
-    return homonyms
-
-
-def are_files_duplicates(file_path1, file_path_2):
-    if os.path.getsize(file_path1) == os.path.getsize(file_path_2):
-        return True
+            filesize = os.path.getsize(fullpath)
+            filepaths[(filename, filesize)].append(fullpath)
+    return filepaths
 
 
 def search_duplicates(filepaths):
-    duplicates = []
-    for path_list in filepaths.values():
-        duplicates += [pair for pair in combinations(path_list, 2) if are_files_duplicates(*pair)]
-    return duplicates
+    return filter(lambda paths: len(paths) > 1, filepaths.values())
 
 
 if __name__ == '__main__':
@@ -40,5 +28,5 @@ if __name__ == '__main__':
         print("Не удалось прочитать папку")
     else:
         duplicates = search_duplicates(folder_content)
-        for dupl_list in duplicates:
-            print('Дубликаты: {}'.format(', '.join(dupl_list)))
+        for set_of_duplicates in duplicates:
+            print('Дубликаты: {}'.format(', '.join(set_of_duplicates)))
