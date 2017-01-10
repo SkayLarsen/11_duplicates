@@ -1,5 +1,5 @@
+import argparse
 import os.path
-import sys
 from collections import defaultdict
 from itertools import combinations
 
@@ -28,7 +28,10 @@ def search_duplicates(filepaths):
 
 
 if __name__ == '__main__':
-    folder_content = inspect_folder(sys.argv[1])
+    argparser = argparse.ArgumentParser(description="Поиск дубликатов в папке и её подпапках")
+    argparser.add_argument('folder', help='путь к папке')
+    args = argparser.parse_args()
+    folder_content = inspect_folder(args.folder)
     if folder_content is None:
         print("Не удалось прочитать папку")
     else:
