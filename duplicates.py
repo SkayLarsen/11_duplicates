@@ -40,5 +40,5 @@ if __name__ == '__main__':
         print("Не удалось прочитать папку")
     else:
         duplicates = search_duplicates(folder_content)
-        for pair in duplicates:
-            print('Дубликаты: {} и {}'.format(pair[0], pair[1]))
+        for dupl_list in duplicates:
+            print('Дубликаты: {}'.format(', '.join(dupl_list)))
